@@ -53,10 +53,26 @@
                 }));
             };
 
-            const handleSubmit = (e) => {
+            const handleSubmit = async (e) => {
                 e.preventDefault();
-                console.log('Form submitted:', formData);
-                setStep('confirmation');
+                try {
+                    const response = await fetch('https://formspree.io/f/mzepjoel', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(formData),
+                    });
+                    if (response.ok) {
+                        console.log('Form submitted successfully:', formData);
+                        setStep('confirmation');
+                    } else {
+                        alert('There was an error submitting the form. Please try again.');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('There was an error submitting the form. Please try again.');
+                }
             };
 
             if (step === 'confirmation') {
